@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <title>CMT Wallet Dapp SDK Example</title>
+	    <style type="text/css">
+	        body {
+	            font-size: 4em;
+	        }
+
+	        button {
+	            font-size: 1em;
+	        }
+	        input {
+	            font-size: 0.6em;
+	        }
+	        @media    screen and (max-device-width:480px)  {
+	          button {
+	            width:  100%;
+	          }
+	          input {
+	            width:  80%;
+	          }
+	        }
+	    </style>
+
+
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript">
+
+            $().ready(function() {
+
+
+                const nsAbi = [
+                    {
+                        "constant": false,
+                        "inputs": [
+                            {
+                                "name": "_symbol",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "forceRemove",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                            {
+                                "name": "_contractAddr",
+                                "type": "address"
+                            },
+                            {
+                                "name": "_desc",
+                                "type": "string"
+                            },
+                            {
+                                "name": "_exitPrice",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "register",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "payable": true,
+                        "stateMutability": "payable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [],
+                        "name": "terminate",
+                        "outputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "constructor"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                            {
+                                "name": "_symbol_length",
+                                "type": "uint256"
+                            },
+                            {
+                                "name": "fee",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "updateFee",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                            {
+                                "name": "_contractAddr",
+                                "type": "address"
+                            },
+                            {
+                                "name": "_desc",
+                                "type": "string"
+                            },
+                            {
+                                "name": "_exitPrice",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "updateRegistration",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                            {
+                                "name": "_amount",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "withdraw",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                            {
+                                "name": "_symbol_length",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "findFee",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "getBalance",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                            {
+                                "name": "_symbol",
+                                "type": "string"
+                            },
+                            {
+                                "name": "_contractAddr",
+                                "type": "address"
+                            }
+                        ],
+                        "name": "isRegistered",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "bool"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                            {
+                                "name": "_symbol",
+                                "type": "string"
+                            }
+                        ],
+                        "name": "lookup",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "address"
+                            },
+                            {
+                                "name": "",
+                                "type": "string"
+                            },
+                            {
+                                "name": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "owner",
+                        "outputs": [
+                            {
+                                "name": "",
+                                "type": "address"
+                            }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ]
+
+                const contract_addr = "0x244008a32ce67dbd5e8d953b95bcbffe16f47020";
+                const contract = web3.cmt.contract(nsAbi, contract_addr);
+                const instance = contract.at(contract_addr);
+
+				//是否已登记
+				$("#is_register").click(function () {
+
+                    web3.cmt.getAccounts(function (e, accounts) {
+                        var token_symbol = $("#token_symbol").val();
+                        var token_address = $("#token_address").val();
+
+
+                        instance.isRegistered(token_symbol, token_address, function (e, result) {
+                            alert(JSON.stringify(result))
+                        })
+
+                    })
+
+
+                });
+
+                //登记
+                $("#retister_btn").click(function(){
+
+                    var contractAddr = $("#contract_addr").val();
+                    var desc = $("#desc").val();
+                    var exitPrice = parseInt($("#exitPrice").val());
+
+                    instance.register(contractAddr, desc, exitPrice * Math.pow(10,18),{value:20000000000000000000},function(err, result){
+                        console.log(JSON.stringify(result))
+					});
+
+				})
+
+				$("#query_symbol_btn").click(function () {
+
+				    var tokenSymbol = $("#query_token_symbol").val();
+
+				    instance.lookup(tokenSymbol, function (err, result) {
+				        if (!err){
+				            $("#priceResult").html(result[2]/Math.pow(10,18) + " CMT")
+						}
+                    })
+
+                });
+
+
+                $("#get_balance").click(function(){
+                    web3.cmt.getAccounts(function (e, accounts) {
+                        if (e) {
+                            $("#result").html("web3.cmt.getAccounts FAILED: " + e);
+                        } else {
+                            web3.cmt.getBalance(accounts[0], function (err, balance) {
+                                $("#balance").text(balance/Math.pow(10,18));
+                            });
+                        }
+                    });
+                })
+
+            })
+
+
+		</script>
+	</head>
+
+	<body>
+	    <h2 id="MISSINGWEB3"></h2>
+	    <p>
+	        <span>Dapp API Examples</span><br>
+	        <span style="font-size: 0.3em;">Use CMT Wallet 2.0 DApp browser scan this QR Code to view exmaples.</span>
+	    </p>
+	    <p>
+	        You are <span id="address"></span><br/>
+	        Balance <span id="balance"></span><br/>
+	        
+	    </p>
+		<p>
+		<div id="result"></div>
+		</p>
+	    <p>
+	        <button id="get_balance">get_balance</button>
+	    </p>
+
+		<p>
+			<div>
+				<input class="contract_input" type="text" placeholder="Please enter Token Symbol" value="DEMO" id="token_symbol">
+			</div>
+			<div>
+				<input class="transfer_input" type="text" placeholder="Please enter Token Address" value="0x39863533211db52252601a073c77c87c447a1782" id="token_address">
+			</div>
+		</p>
+		<p>
+			<button id="is_register">is_register</button>
+		</p>
+
+		<p>
+		<div>
+			<input class="contract_input" type="text" placeholder="Please enter Token Symbol" value="DEMO" id="query_token_symbol">
+		</div>
+		<div id="priceResult">
+		</div>
+
+		</p>
+		<p>
+			<button id="query_symbol_btn">LOOKUP</button>
+		</p>
+
+		<p>
+			<div>
+				<input class="contract_input" type="text" placeholder="CRC20 Contract Address" value="0x39863533211db52252601a073c77c87c447a1782" id="contract_addr">
+			</div>
+			<div>
+				<input class="transfer_input" type="text" placeholder="Please enter Description" value="test demo" id="desc">
+			</div>
+			<div>
+				<input class="transfer_input" type="text" placeholder="exit Price (CMT)" value="" id="exitPrice">
+			</div>
+			</p>
+		<p>
+			<button id="retister_btn">register token</button>
+		</p>
+	</body>
+</html>
